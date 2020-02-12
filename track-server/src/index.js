@@ -1,8 +1,11 @@
 const express = require('express')
 const mongoose = require('mongoose')
+const bodyParser = require('body-parser')
+const authRoutes = require('./routes/authRoutes')
 
 const app = express()
-const port = 3000
+app.use(bodyParser.json())
+app.use(authRoutes)
 
 const mongoUri = 'mongodb+srv://redearthbluesky:passwordpassword@cluster0-jnmrs.mongodb.net/test?retryWrites=true&w=majority'
 
@@ -13,7 +16,7 @@ mongoose.connect(mongoUri, {
 })
 
 mongoose.connection.on('connected', () => {
-  console.log('****Connected to mongoDB.Atlas instance***')
+  console.log('Connected to mongoDB.Atlas instance')
 })
 
 mongoose.connection.on('error', (err) => {
@@ -27,6 +30,7 @@ app.get('/', (req, res) => {
   res.send('Hi there!')
 })
 
+const port = 3000
 app.listen(port, () => {
   console.log(`Listening on port: ${port}`)
 })

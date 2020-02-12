@@ -10,3 +10,7 @@ From there select >>  Enter IP Address...
 
 https://cloud.mongodb.com/
 Cluster 0
+
+nodemon
+restart server after udpates/changes, and start with
+>npm run dev
