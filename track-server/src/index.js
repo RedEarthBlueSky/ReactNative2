@@ -23,7 +23,6 @@ mongoose.connection.on('error', (err) => {
   console.error('Error connected to mongo: ', err)
 })
 
-
 //  anytime a get type request is made to the root route('/')
 //  of the project we want a function to fire
 app.get('/', (req, res) => {
