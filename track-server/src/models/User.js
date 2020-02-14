@@ -1,6 +1,11 @@
   const mongoose = require('mongoose')
 
   const userSchema = new mongoose.Schema({
+    name: {
+      type: String,
+      unique: false,
+      required: false
+    },
     email: {
       type: String,
       unique: true,
@@ -11,15 +16,15 @@
       unique: false,
       required: true,
     },
-    somestuff: {
-      type: String,
+    anArray: {
+      type: Array,
       unique: false,
-      required: true,
+      required: false,
     },
-    otherstuff: {
-      type: String,
+    anObject: {
+      type: Object,
       unique: false,
-      required: true,
+      required: false,
     }
   })
 

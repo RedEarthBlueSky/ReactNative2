@@ -3,6 +3,7 @@
   const mongoose = require('mongoose')
   const bodyParser = require('body-parser')
   const authRoutes = require('./routes/authRoutes')
+  const requireAuth = require('./middleware/requireAuth')
 
   const app = express()
   app.use(bodyParser.json())
@@ -25,9 +26,9 @@
   })
 
   //  anytime a get type request is made to the root route('/')
-  //  of the project we want a function to fire
-  app.get('/', (req, res) => {
-    res.send('Hi there!')
+  //  of the project fire a function
+  app.get('/', requireAuth, (req, res) => {
+    res.send(`Your email: ${req.user.email}`)
   })
 
   const port = 3000
