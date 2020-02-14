@@ -6,7 +6,8 @@ const User = mongoose.model('User')
 const router = express.Router()
 
 router.post('/signup', (req, res) => {
-  console.log('req.body is - ', req.body)
+  console.log('***req.body is - ')
+  console.log(req.body)
   res.send('You made a post request')
 })
 
