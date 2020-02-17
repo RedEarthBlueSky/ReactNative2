@@ -1,4 +1,5 @@
   const mongoose = require('mongoose')
+  const bcrypt = require('bcrypt')
 
   const userSchema = new mongoose.Schema({
     name: {
@@ -26,6 +27,18 @@
       unique: false,
       required: false,
     }
+  })
+
+  //  using 'function' because we want 'this' to refer
+  //  to the function scope
+  userSchema.pre('save', function (next) {
+    const user = this
+    if (user.isModified('password')) {
+      //  if the password has not been changed do nothing
+      return next()
+    }
+
+    //  generate the salt and hash it
   })
 
   mongoose.model('User', userSchema)

@@ -3,11 +3,9 @@ const mongoose = require('mongoose')
 
 const User = mongoose.model('User')
 
-// JSON Web Token Middleware to...
-// authenticate the user
+// JSON Web Token Middleware to authenticate the user
 module.exports = (req, res, next) => {
-  //  retrieve the authorization header
-  //  Express downcases any authorization names
+  //  retrieve the authorization header Express downcases auth names
   const { authorization } = req.headers
   // authorization === 'Bearer 	+ JWT'
 
@@ -15,11 +13,9 @@ module.exports = (req, res, next) => {
     return res.status(401).send({ error: 'You must be logged in. ' })
   }
 
-  // console.log('authorization:  ', authorization)
   const token = authorization.replace('Bearer ', '')
-  // console.log('Token: ', token)
+
   jwt.verify(token, 'MY_SECRET_KEY', async (err, payload) => {
-    // console.log('payload: ', payload)
     if (err) {
       return res.status(401).send({ error: 'You must be signed in.' })
     }
