@@ -2,11 +2,6 @@
   const bcrypt = require('bcrypt')
 
   const userSchema = new mongoose.Schema({
-    name: {
-      type: String,
-      unique: false,
-      required: false
-    },
     email: {
       type: String,
       unique: true,
@@ -14,31 +9,49 @@
     },
     password: {
       type: String,
-      unique: false,
       required: true,
-    },
-    anArray: {
-      type: Array,
-      unique: false,
-      required: false,
-    },
-    anObject: {
-      type: Object,
-      unique: false,
-      required: false,
     }
   })
 
-  //  using 'function' because we want 'this' to refer
-  //  to the function scope
+  //  using 'function' because 'this'
   userSchema.pre('save', function (next) {
     const user = this
-    if (user.isModified('password')) {
-      //  if the password has not been changed do nothing
+    if (!user.isModified('password')) {
       return next()
     }
 
-    //  generate the salt and hash it
+    bcrypt.genSalt(10, (err, salt) => {
+      if (err) {
+        return next(err)
+      }
+
+      bcrypt.hash(user.password, salt, (err, hash) => {
+        if (err) {
+          return next(err)
+        }
+        user.password = hash
+        next()
+      })
+    })
   })
+
+  //  add salt creattion and checking to the user model
+  userSchema.methods.comparePassword = function (candidatePassword) {
+    const user = this
+
+    return new Promise((resolve, reject) => {
+      bcrypt.compare(candidatePassword, user.password, (err, isMatch) => {
+        if (err) {
+          return reject(err)
+        }
+
+        if (!isMatch) {
+          return reject(false)
+        }
+
+        resolve(true)
+      })
+    })
+  }
 
   mongoose.model('User', userSchema)

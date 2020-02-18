@@ -5,7 +5,6 @@ const User = mongoose.model('User')
 
 // JSON Web Token Middleware to authenticate the user
 module.exports = (req, res, next) => {
-  //  retrieve the authorization header Express downcases auth names
   const { authorization } = req.headers
   // authorization === 'Bearer 	+ JWT'
 
